@@ -66,6 +66,30 @@
     });
   }
 
+  // Hero slideshow
+  var slides = document.querySelectorAll('.hero .slide');
+  var dots = document.querySelectorAll('.hero-dots button');
+  if (slides.length > 1) {
+    var current = 0, timer;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function go(i) {
+      slides[current].classList.remove('active');
+      if (dots[current]) dots[current].removeAttribute('aria-current');
+      current = (i + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      if (dots[current]) dots[current].setAttribute('aria-current', 'true');
+    }
+    function start() { if (!reduce) timer = setInterval(function () { go(current + 1); }, 6000); }
+    dots.forEach(function (d, i) {
+      d.addEventListener('click', function () { clearInterval(timer); go(i); start(); });
+    });
+    document.addEventListener('visibilitychange', function () {
+      clearInterval(timer);
+      if (!document.hidden) start();
+    });
+    start();
+  }
+
   // Lightbox
   var box = document.getElementById('lightbox');
   if (box) {

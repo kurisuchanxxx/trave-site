@@ -118,26 +118,39 @@
 
 <main id="top">
 
-  <section class="hero">
-    <picture>
-      <source srcset="images/spiaggia-mezzavalle-conero.webp" type="image/webp">
-      <img src="images/spiaggia-mezzavalle-conero.jpg" alt="La falesia e la spiaggia di Mezzavalle sul Monte Conero, a un chilometro dalla casa" width="1024" height="403" fetchpriority="high">
-    </picture>
+  <section class="hero" id="hero">
+    <div class="slides">
+      <picture class="slide active">
+        <source srcset="images/spiaggia-mezzavalle-conero.webp" type="image/webp">
+        <img src="images/spiaggia-mezzavalle-conero.jpg" alt="La spiaggia di Mezzavalle sul Conero, a un chilometro dalla casa" fetchpriority="high">
+      </picture>
+      <picture class="slide">
+        <source srcset="images/casa-esterno-cortile.webp" type="image/webp">
+        <img src="images/casa-esterno-cortile.jpg" alt="Il cortile del casale al Trave" loading="lazy">
+      </picture>
+      <picture class="slide">
+        <source srcset="images/tramonto-giardino.webp" type="image/webp">
+        <img src="images/tramonto-giardino.jpg" alt="Tramonto sul giardino con il Monte Conero" loading="lazy">
+      </picture>
+      <picture class="slide">
+        <source srcset="images/giardino-palma-mare.webp" type="image/webp">
+        <img src="images/giardino-palma-mare.jpg" alt="Il giardino con la palma e il mare all'orizzonte" loading="lazy">
+      </picture>
+      <picture class="slide">
+        <source srcset="images/soggiorno-camino.webp" type="image/webp">
+        <img src="images/soggiorno-camino.jpg" alt="Il soggiorno con il camino e le travi a vista" loading="lazy">
+      </picture>
+    </div>
     <div class="container hero-content">
-      <span class="eyebrow" style="color:#ffd39a">Montacuto · Ancona · Riviera del Conero</span>
+      <span class="eyebrow">Montacuto · Ancona · Riviera del Conero</span>
       <h1>Casa vacanze al Trave, tra la campagna e il mare del Conero</h1>
-      <p>Una casa intera di 110 m² per 6 persone, con giardino, travi a vista e parcheggio privato. A 600 metri dallo Scoglio del Trave e a un chilometro dalla spiaggia di Mezzavalle.</p>
+      <p>Casa intera per 6 persone, a 600 metri dal mare. Prenotando direttamente hai la tariffa più bassa.</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href="#prenota">Richiedi disponibilità</a>
         <a class="btn btn-light" href="#galleria">Guarda le foto</a>
       </div>
-      <div class="hero-badges">
-        <span>Prenotazione diretta al miglior prezzo</span>
-        <span>Animali ammessi gratis</span>
-        <span>Parcheggio privato</span>
-        <span>WiFi e aria condizionata</span>
-      </div>
     </div>
+    <div class="hero-dots" aria-label="Scegli foto"><button type="button" aria-label="Foto 1" aria-current="true"></button><button type="button" aria-label="Foto 2"></button><button type="button" aria-label="Foto 3"></button><button type="button" aria-label="Foto 4"></button><button type="button" aria-label="Foto 5"></button></div>
   </section>
 
   <div class="container">
