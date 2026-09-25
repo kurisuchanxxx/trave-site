@@ -1,22 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.casaincampagnatrave.it/</loc>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/"/>
-    <image:image><image:loc>https://www.casaincampagnatrave.it/images/spiaggia-mezzavalle-conero.jpg</image:loc><image:title>Spiaggia di Mezzavalle, Conero</image:title></image:image>
-    <image:image><image:loc>https://www.casaincampagnatrave.it/images/casa-esterno-cortile.jpg</image:loc><image:title>Casa in Campagna Trave, esterno</image:title></image:image>
-    <image:image><image:loc>https://www.casaincampagnatrave.it/images/camera-matrimoniale.jpg</image:loc><image:title>Camera matrimoniale</image:title></image:image>
-    <image:image><image:loc>https://www.casaincampagnatrave.it/images/soggiorno-camino.jpg</image:loc><image:title>Soggiorno con camino</image:title></image:image>
-    <image:image><image:loc>https://www.casaincampagnatrave.it/images/giardino-palma-mare.jpg</image:loc><image:title>Giardino con vista mare</image:title></image:image>
   </url>
   <url>
     <loc>https://www.casaincampagnatrave.it/en/</loc>
     <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/la-casa/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/la-casa/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/the-house/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/la-casa/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/en/the-house/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/la-casa/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/the-house/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/la-casa/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/galleria/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/galleria/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/galleria/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/en/gallery/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/galleria/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/gallery/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/galleria/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/dintorni/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/dintorni/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/surroundings/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/dintorni/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/en/surroundings/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/dintorni/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/surroundings/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/dintorni/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/prezzi/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/prezzi/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/rates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/prezzi/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/en/rates/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/prezzi/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/rates/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/prezzi/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/contatti/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/contatti/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/contatti/"/>
+  </url>
+  <url>
+    <loc>https://www.casaincampagnatrave.it/en/contact/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://www.casaincampagnatrave.it/contatti/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.casaincampagnatrave.it/en/contact/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.casaincampagnatrave.it/contatti/"/>
   </url>
 </urlset>
