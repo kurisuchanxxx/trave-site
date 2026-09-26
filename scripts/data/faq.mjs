@@ -1,0 +1,32 @@
+// Domande frequenti. Solo status 'confirmed' viene pubblicato e messo nello schema FAQPage.
+// pages: dove compare la domanda.
+
+export const FAQ = [
+  { id: 'guests', status: 'confirmed', pages: ['home'],
+    q: { it: 'Quante persone può ospitare la casa?', en: 'How many people can the house sleep?' },
+    a: { it: 'Fino a 6 ospiti: una camera matrimoniale, una camera con due letti singoli e un divano letto in soggiorno. La casa è tutta vostra.', en: 'Up to 6 guests: a double bedroom, a twin bedroom and a sofa bed in the living room. The house is all yours.' } },
+  { id: 'sea', status: 'confirmed', pages: ['home'],
+    q: { it: 'Quanto dista la casa dal mare?', en: 'How far is the house from the sea?' },
+    a: { it: 'Lo Scoglio del Trave è a 600 metri e la spiaggia di Mezzavalle a 1,1 km. Portonovo è a circa 5 km.', en: 'Scoglio del Trave is 600 metres away and Mezzavalle beach 1.1 km. Portonovo is about 5 km away.' } },
+  { id: 'pets', status: 'confirmed', pages: ['home', 'prezzi'],
+    q: { it: 'Gli animali pagano un supplemento?', en: 'Is there a charge for pets?' },
+    a: { it: 'No, gli animali sono ammessi senza supplemento. Il giardino è recintato.', en: 'No, pets are welcome at no extra charge. The garden is fenced.' } },
+  { id: 'parking', status: 'confirmed', pages: ['home'],
+    q: { it: 'C\'è il parcheggio?', en: 'Is there parking?' },
+    a: { it: 'Sì, un parcheggio privato gratuito con sbarra, all\'interno della proprietà e senza bisogno di prenotarlo.', en: 'Yes, a free gated private car park inside the property, with no need to book it.' } },
+  { id: 'times', status: 'confirmed', pages: ['home'],
+    q: { it: 'A che ora sono check-in e check-out?', en: 'What are the check-in and check-out times?' },
+    a: { it: 'Check-in dalle 15:00, check-out entro le 10:00. Ti chiediamo di comunicarci in anticipo l\'orario di arrivo.', en: 'Check-in from 15:00, check-out by 10:00. Please let us know your arrival time in advance.' } },
+  { id: 'cots', status: 'confirmed', pages: ['home'],
+    q: { it: 'Ci sono culle o letti aggiuntivi?', en: 'Are cots or extra beds available?' },
+    a: { it: 'No, culle e letti aggiuntivi non sono disponibili. I bambini di tutte le età sono benvenuti.', en: 'No, cots and extra beds are not available. Children of all ages are welcome.' } },
+  { id: 'basis', status: 'confirmed', pages: ['prezzi'],
+    q: { it: 'Il prezzo è a persona o per la casa?', en: 'Is the price per person or for the house?' },
+    a: { it: 'La tariffa è per la casa intera, fino a 6 ospiti.', en: 'The rate is for the entire house, up to 6 guests.' } },
+  { id: 'tax', status: 'confirmed', pages: ['prezzi'],
+    q: { it: 'C\'è l\'imposta di soggiorno?', en: 'Is there a tourist tax?' },
+    a: { it: 'Sì, il Comune di Ancona applica l\'imposta di soggiorno, che si paga a parte. Importo ed esenzioni sono indicati nel preventivo.', en: 'Yes, the Comune di Ancona charges a tourist tax, paid separately. The amount and exemptions are shown in the quote.' } },
+  { id: 'how', status: 'confirmed', pages: ['prezzi'],
+    q: { it: 'Come si prenota direttamente?', en: 'How do I book direct?' },
+    a: { it: 'Mandaci date e numero di ospiti con il modulo, su WhatsApp o per telefono: ti rispondiamo con disponibilità e preventivo. Nessun pagamento per chiedere.', en: 'Send us your dates and number of guests with the form, on WhatsApp or by phone: we reply with availability and a quote. No payment to ask.' } },
+];
