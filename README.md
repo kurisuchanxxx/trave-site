@@ -1,68 +1,74 @@
-# Casa in Campagna Trave, sito web
+# Casa in Campagna, sito web
 
-Sito bilingue (IT/EN) per la casa vacanze "Casa in Campagna" in Contrada Trave 125, Montacuto (Ancona).
-Obiettivo: portare prenotazioni dirette (modulo, WhatsApp, telefono) con una tariffa più bassa di Booking.
+Sito bilingue (IT/EN) della casa vacanze "Casa in Campagna", Contrada Trave 125, Montacuto (Ancona).
+Obiettivo: far prenotare direttamente dal sito (modulo, WhatsApp, telefono), con un'esperienza che ispiri più fiducia di un portale.
 
-Anteprima: https://kurisuchanxxx.github.io/trave-site/ (si aggiorna a ogni merge su `main`).
+Anteprima: https://kurisuchanxxx.github.io/trave-site/ (noindex, si aggiorna a ogni merge su `main`).
 
-## Pagine
+## Come funziona
 
-| Pagina | IT | EN |
-|---|---|---|
-| Home | `/` | `/en/` |
-| La casa | `/la-casa/` | `/en/the-house/` |
-| Galleria | `/galleria/` | `/en/gallery/` |
-| Dintorni | `/dintorni/` | `/en/surroundings/` |
-| Prezzi e prenotazione | `/prezzi/` | `/en/rates/` |
-| Contatti | `/contatti/` | `/en/contact/` |
-
-## Come si modifica
-
-Le pagine HTML sono **generate**: testi, contatti, foto e struttura stanno in `scripts/build.mjs`.
-Dopo ogni modifica:
+Sito statico generato da `scripts/build.mjs` (Node 20+, nessuna dipendenza). Il build scrive tutto in `dist/`, che non è nel repository: GitHub Actions lo genera e pubblica solo quella cartella.
 
 ```
-node scripts/build.mjs
+node scripts/build.mjs                          anteprima (noindex)
+SHOW_PLACEHOLDERS=1 node scripts/build.mjs      anteprima con contatti segnaposto e stagioni indicative (è quella online)
+SITE_ENV=production node scripts/build.mjs      produzione: si ferma se mancano CIN, telefono, email, titolare privacy
+npx serve dist                                  vedere il risultato in locale
 ```
 
-Il comando riscrive tutti gli `index.html` e `sitemap.xml`. Non modificare a mano gli HTML generati, le modifiche verrebbero perse al build successivo. Nessuna dipendenza da installare, basta Node 18+.
+| Cartella | Contenuto |
+|---|---|
+| `scripts/data/site.mjs` | identità, contatti, CIN, dati legali, promo, vantaggi diretti, recensioni |
+| `scripts/data/rates.mjs` | stagioni, tariffe, cosa è incluso, imposta di soggiorno, condizioni |
+| `scripts/data/photos.mjs` | foto: didascalie, alt IT/EN, ruolo e limite di ingrandimento |
+| `scripts/data/places.mjs`, `amenities.mjs`, `faq.mjs` | distanze, servizi e regole, domande frequenti |
+| `scripts/copy/it.mjs`, `en.mjs` | tutti i testi delle pagine |
+| `css/`, `js/`, `fonts/`, `images/` | stile, comportamenti, font ospitati sul sito, foto ottimizzate |
+| `scripts/make-derivatives.mjs` | da eseguire una volta sola: sfondi sfocati, immagini social, favicon (usa sharp, fuori dal repo) |
 
-```
-css/style.css     stile
-js/main.js        header, menu mobile, slideshow, modulo, lightbox
-images/           foto ottimizzate (WebP + JPG + miniature -640)
-scripts/build.mjs generatore delle pagine
-Casa in campagna montacuto/   foto originali da Booking (non usate dal sito)
-```
+La struttura dei dati ricalca i documenti che serviranno in Sanity (site, photo, rates/season, place, amenity, faq) per il passaggio ad Astro + Sanity su Cloudflare.
 
-Anteprima locale: `npx serve .`
+Un campo `null` non viene mai inventato: il componente che lo usa sparisce. Il build segnala tutto ciò che manca.
 
-## Da completare prima del lancio
+## Regole dei contenuti
 
-In `scripts/build.mjs`, oggetto `C` in cima al file:
+- Mai confronti di prezzo con Booking o Airbnb, mai "miglior prezzo" o "senza commissioni": il vantaggio della prenotazione diretta è implicito (contatto diretto, richieste su misura, nessun pagamento per chiedere).
+- Niente fatti inventati: recensioni, voti, tempi di risposta, condizioni di cancellazione, promo e vantaggi compaiono solo quando il proprietario li conferma.
+- Niente trattini lunghi nei testi: il build si ferma se ne trova uno.
 
-- [ ] `SITE`: dominio reale (ora `https://www.casaincampagnatrave.it`), anche in `robots.txt`
-- [ ] telefono (`phone`, `tel`, `wa`) ed email
-- [ ] `cin`: Codice Identificativo Nazionale, obbligatorio
-- [ ] `lat`/`lng`: coordinate esatte da Google Maps
+## Da chiedere al proprietario
 
-Da confermare con il cliente:
+**Obbligatori per il lancio**
+- CIN (Codice Identificativo Nazionale), obbligatorio su ogni annuncio, sito compreso
+- telefono, WhatsApp, email
+- nome e recapiti del titolare per l'informativa privacy, tempi di conservazione dei dati
+- dominio definitivo
 
-- [ ] Numero di camere (Booking dice 1, le foto ne mostrano 2)
-- [ ] Stagioni e date nella pagina Prezzi (ora sono un esempio: bassa ottobre-maggio, media giugno e settembre, alta luglio e agosto, Ferragosto) e se mostrare i prezzi o lasciare "su richiesta"
-- [ ] Eventuale sconto o codice promo per chi prenota diretto (come il "PROMO2026" del Rustico del Conero)
-- [ ] Foto in alta risoluzione: quelle attuali vengono da Booking (max 1024px, alcune invernali)
-- [ ] Pagine privacy e cookie
+**Tariffe** (in `rates.mjs`)
+- conferma o correzione delle stagioni proposte (bassa, primavera e autunno, media, alta, Ferragosto, festività natalizie) e dei periodi
+- prezzo a notte per stagione (per la casa intera), eventuale prezzo settimanale, soggiorno minimo, giorno fisso di arrivo
+- pulizia finale, legna per il camino, consumi
+- caparra, saldo, metodi di pagamento, deposito cauzionale, cancellazione (pubblichiamo solo il testo del proprietario)
+- importo dell'imposta di soggiorno applicato alla casa
+- appena i prezzi ci sono, la pagina Prezzi mostra "da € X / notte", attiva lo stimatore del soggiorno e aggiunge lo schema Offer per Google
 
-Tecnico:
+**Fiducia** (in `site.mjs`)
+- tempo di risposta realistico ("di solito rispondiamo entro...")
+- nome e foto dell'host, se vuole comparire
+- eventuale vantaggio solo per chi prenota diretto (codice promo, benvenuto, orari flessibili)
+- permesso di citare il voto 8,7 alla posizione su Booking, con link
+- recensioni con consenso degli ospiti e nota su come vengono verificate (Omnibus)
+- coordinate del cancello per la mappa
+- servizio per il modulo (Formspree, Web3Forms o funzione Cloudflare): senza, il modulo apre l'app di posta
 
-- [ ] Modulo: funziona su Netlify (Netlify Forms). Su GitHub Pages l'invio fallisce e il JS apre il client email con i dati come ripiego
-- [ ] Google Analytics e Search Console; il JS invia l'evento `generate_lead` se `gtag` è presente
+**Foto**: quelle attuali vengono da Booking (max 1024px). Il layout non le ingrandisce mai oltre la loro dimensione; con foto originali ad alta risoluzione il sito migliora subito.
 
-## Scelte SEO
+## SEO tecnica
 
-- URL leggibili per lingua, `hreflang` IT/EN e canonical su ogni pagina
-- Un H1 per pagina, title e description scritti per pagina
-- JSON-LD: `VacationRental` in home, `FAQPage` nella pagina Prezzi, `BreadcrumbList` nelle pagine interne
-- Immagini con nomi descrittivi, `alt` in entrambe le lingue, WebP, lazy loading
-- CTA "prenota direttamente" in ogni pagina e barra fissa su mobile
+- URL per lingua, canonical e `hreflang` reciproci, `x-default`
+- title e description scritti per pagina, un H1 per pagina, breadcrumb visibile
+- JSON-LD: `WebSite`, `LodgingBusiness`, `House` (letti, ospiti, superficie), `WebPage`/`CollectionPage`/`ContactPage`, `BreadcrumbList`, `FAQPage` solo con risposte confermate, `Offer` solo con prezzi reali. Mai `VacationRental`, `AggregateRating`, recensioni o valori segnaposto
+- immagini con `srcset`/`sizes`, WebP con JPG di riserva, preload dell'immagine principale, dimensioni esplicite
+- font ospitati sul sito (niente richieste a Google), mappa caricata solo al clic
+- sitemap con `lastmod`, hreflang e immagini; robots.txt; 404; manifest e icone
+- anteprima su GitHub Pages con `noindex` scritto nell'HTML
