@@ -110,6 +110,10 @@ export default {
       h1: 'A country house between Monte Conero and the sea',
       lead: 'Entire house, 110 m², up to 6 guests. 600 m from Scoglio del Trave.',
       discover: 'Discover the house',
+      h1Full: 'Your place on the Conero',
+      subFull: 'An entire house for 6 guests, 600 m from Scoglio del Trave. Montacuto, Ancona.',
+      cardFull: 'Discover the house',
+      downFull: 'Scroll to availability',
       intro: {
         eyebrow: 'The house',
         h2: 'Exposed beams, terracotta and the Conero from the window',

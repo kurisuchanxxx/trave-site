@@ -111,6 +111,10 @@ export default {
       h1: 'Una casa di campagna tra il Conero e il mare',
       lead: 'Casa intera, 110 m², fino a 6 ospiti. A 600 m dallo Scoglio del Trave.',
       discover: 'Scopri la casa',
+      h1Full: 'Il tuo posto sul Conero',
+      subFull: 'Casa intera per 6 ospiti, a 600 m dallo Scoglio del Trave. Montacuto, Ancona.',
+      cardFull: 'Scopri la casa',
+      downFull: 'Scorri alla disponibilità',
       intro: {
         eyebrow: 'La casa',
         h2: 'Travi a vista, cotto e il Conero dalla finestra',
