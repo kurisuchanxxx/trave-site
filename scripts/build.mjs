@@ -27,6 +27,7 @@ const ENV = process.env.SITE_ENV === 'production' ? 'production' : 'preview';
 const PROD = ENV === 'production';
 const SHOW_PLACEHOLDERS = !PROD && process.env.SHOW_PLACEHOLDERS === '1';
 const BASE_PATH = process.env.BASE_PATH || '/';
+const HERO = process.env.HERO === 'frame' ? 'frame' : 'full'; // full = hero a tutto schermo (default), frame = versione con cornice
 const { RATES } = await import(process.env.RATES_FILE ? pathToFileURL(resolve(process.env.RATES_FILE)).href : './data/rates.mjs');
 
 const SITE = structuredClone(SITE_DATA);
@@ -165,6 +166,8 @@ const ICONS = {
   mail: '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
   pin: '<path d="M20 10c0 5-5.54 10.19-7.4 11.8a1 1 0 0 1-1.2 0C9.54 20.19 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
   arrow: '<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  arrowUp: '<path d="M7 17 17 7"/><path d="M7 7h10v10"/>',
+  down: '<path d="m6 9 6 6 6-6"/>',
   left: '<path d="m15 18-6-6 6-6"/>',
   right: '<path d="m9 18 6-6-6-6"/>',
   pause: '<rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/>',
@@ -319,6 +322,26 @@ function header(ctx) {
   </div>`;
 }
 
+function headerCentred(ctx) {
+  const { C } = ctx;
+  const full = header(ctx);
+  const menuDialog = full.slice(full.indexOf('<div class="menu" id="menu"'));
+  return `<header class="site-header site-header--centred" id="header">
+    <div class="wrap header-in">
+      <a class="hbox menu-btn" href="#footer-nav" aria-controls="menu" aria-expanded="false">${ctx.i('menu')}<span>${C.common.menu}</span></a>
+      <a class="brand brand-centred" href="${ctx.P('home')}" aria-label="${SITE.name}, home">
+        <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="none" stroke="currentColor" stroke-width="1.5"/><text x="32" y="39" text-anchor="middle">125</text></svg>
+        <span class="brand-name">${SITE.name}</span>
+      </a>
+      <div class="hbox-group">
+        <a class="hbox hbox-ghost" href="${ctx.P('prezzi')}" data-cta="header_rates">${C.common.nav.prezzi}</a>
+        <a class="hbox hbox-solid" href="${ctx.P('contatti', '#richiesta')}" data-cta="header">${C.common.checkShort}</a>
+      </div>
+    </div>
+  </header>
+  ${menuDialog}`;
+}
+
 function crumbs(ctx) {
   const { C } = ctx;
   return `<nav class="crumbs" aria-label="${C.common.breadcrumb}"><ol><li><a href="${ctx.P('home')}">${C.common.nav.home}</a></li><li aria-hidden="true">/</li><li><span aria-current="page">${C.common.nav[ctx.key] || C.pages[ctx.key].eyebrow}</span></li></ol></nav>`;
@@ -466,6 +489,7 @@ function footer(ctx) {
         </ul>
       </div>
     </div>
+    ${HERO === 'full' ? `<p class="footer-mark" aria-hidden="true">Trave</p>` : ''}
     <div class="wrap footer-bottom">
       <p>© ${year} ${SITE.name} · ${SITE.address.display}</p>
       <p><a href="${ctx.P('privacy')}">${C.footer.privacy}</a> · <a href="${ctx.P('privacy', '#cookie')}">${C.footer.cookie}</a> · <span>${C.footer.madeBy}</span></p>
@@ -767,7 +791,47 @@ content.home = ctx => {
   const slideAttrs = (p, i) => `role="group" aria-roledescription="slide" aria-label="${fill(C.hero.slide, { n: i + 1, total: slides.length })}" data-caption="${esc(p.caption[lang])}" data-bd="${backdrop(p.key) || ''}" data-veil="${p.veil}" data-tav="${pad2(p.tav)}"`;
   const slideHtml = (p, i) => `<div class="slide${i === 0 ? ' is-active' : ''}" ${slideAttrs(p, i)}>${pic(ctx, p.key, { eager: i === 0, sizes: SIZES.hero, focal: p.focal })}</div>`;
   const first = slides[0];
-  const hero = `<section class="hero" aria-roledescription="carousel" aria-label="${C.hero.label}">
+  const fullSlides = ['casa-esterno-cortile', 'tramonto-giardino', 'camera-matrimoniale', 'giardino-palma-mare', 'soggiorno-travi'].map(k => PHOTO[k]);
+  const fullSlide = (p, i) => `<div class="slide${i === 0 ? ' is-active' : ''}" ${slideAttrs(p, i).replace(`of ${slides.length}`, `of ${fullSlides.length}`).replace(`di ${slides.length}`, `di ${fullSlides.length}`)}>${pic(ctx, p.key, { eager: i === 0, sizes: '100vw', focal: p.focal })}</div>`;
+  const heroFull = `<section class="hero hero-full" aria-roledescription="carousel" aria-label="${C.hero.label}">
+    <div class="hero-media" id="hero-slides">
+      ${fullSlide(fullSlides[0], 0)}
+      ${fullSlides.slice(1).map((p, i) => `<template class="slide-tpl">${fullSlide(p, i + 1)}</template>`).join('\n      ')}
+    </div>
+    <div class="hero-veil" aria-hidden="true"></div>
+    <div class="hero-grain" aria-hidden="true"></div>
+    <div class="hero-stage hero-full-in">
+      <div class="hero-claim">
+        <h1 class="eyebrow eyebrow-sabbia hero-h1">${H.eyebrow}</h1>
+        <p class="hero-title">${H.h1Full}</p>
+      </div>
+      <div class="hero-rule" aria-hidden="true"></div>
+      <div class="hero-foot">
+        <p class="hero-sub">${H.subFull}</p>
+        <div class="hero-controls">
+          <p class="hero-caption"><span class="tav">${C.common.photoPlate} ${pad2(fullSlides[0].tav)}</span> <span class="hero-caption-text">${fullSlides[0].caption[lang]}</span></p>
+          <div class="hero-ctrl">
+            <span class="hero-count"><span class="hero-cur">01</span> / ${pad2(fullSlides.length)}</span>
+            <span class="hero-progress" aria-hidden="true"><span></span></span>
+            <button class="icon-btn icon-btn-dark hero-prev" type="button" aria-label="${C.hero.prev}">${ctx.i('left')}</button>
+            <button class="icon-btn icon-btn-dark hero-next" type="button" aria-label="${C.hero.next}">${ctx.i('right')}</button>
+            <button class="icon-btn icon-btn-dark hero-pause" type="button" aria-pressed="false" aria-label="${C.hero.pause}" data-label-play="${C.hero.play}" data-label-pause="${C.hero.pause}">${ctx.i('pause')}${ctx.i('play', 'i-play')}</button>
+          </div>
+        </div>
+        <a class="hero-card" href="${ctx.P('casa')}" data-cta="hero_card">
+          <span class="hero-card-thumbs" aria-hidden="true">
+            <img src="${ctx.r('images/soggiorno-camino.webp')}" alt="" width="576" height="704" loading="lazy">
+            <img src="${ctx.r('images/camera-doppia.webp')}" alt="" width="578" height="704" loading="lazy">
+          </span>
+          <span class="hero-card-arrow" aria-hidden="true">${ctx.i('arrowUp')}</span>
+          <span class="hero-card-label">${H.cardFull}</span>
+        </a>
+      </div>
+      <a class="hero-down icon-btn icon-btn-dark" href="#dopo-hero" aria-label="${H.downFull}">${ctx.i('down')}</a>
+      <p class="sr-only hero-live" aria-live="off"></p>
+    </div>
+  </section>`;
+  const hero = `<section class="hero" aria-roledescription="carousel\" aria-label="${C.hero.label}">
     <div class="hero-bd" aria-hidden="true">
       <div class="bd is-on" style="--bd:url(${backdrop(first.key)});--veil:${first.veil}"></div><div class="bd"></div>
     </div>
@@ -808,11 +872,11 @@ content.home = ctx => {
 
   return {
     title: H.title, desc: H.desc, h1: H.h1, ogImage: 'og-home', ogAlt: PHOTO['casa-esterno-cortile'].alt[lang],
-    preload: { key: first.key, sizes: SIZES.hero },
+    preload: HERO === 'full' ? { key: 'casa-esterno-cortile', sizes: '100vw' } : { key: first.key, sizes: SIZES.hero },
     faqSchema: faq.schema,
-    hero,
+    hero: HERO === 'full' ? heroFull : hero,
     body: `
-  <div class="wrap booking-slot">${bookingBar(ctx, { variant: 'slab' })}</div>
+  <div class="wrap booking-slot${HERO === 'full' ? ' booking-dock' : ''}" id="dopo-hero">${bookingBar(ctx, { variant: 'slab' })}</div>
 
   <div class="wrap facts-slot">${factsStrip(ctx)}</div>
 
@@ -851,6 +915,7 @@ content.home = ctx => {
   </section>
 
   <section class="horizon">
+    ${HERO === 'full' ? '<p class="watermark" aria-hidden="true">Conero</p>' : ''}
     ${backdrop('spiaggia-mezzavalle-conero') ? `<div class="bd bd-light is-on" aria-hidden="true" style="--bd:url(${backdrop('spiaggia-mezzavalle-conero')})"></div>` : ''}
     <div class="wrap">
       ${sectionHead(ctx, 4, H.horizon.eyebrow, H.horizon.h2, { link: linkArrow(ctx, ctx.P('dintorni'), H.horizon.link) })}
@@ -1276,8 +1341,9 @@ function layout(lang, key) {
   const ctx = makeCtx(lang, key);
   const page = content[key](ctx);
   const C = ctx.C;
-  const hdr = header(ctx);
-  const tb = topbar(ctx);
+  const centred = HERO === 'full' && key === 'home';
+  const hdr = centred ? headerCentred(ctx) : header(ctx);
+  const tb = centred ? '' : topbar(ctx);
   const main = `<main id="main">
   ${page.hero}
 ${page.body}

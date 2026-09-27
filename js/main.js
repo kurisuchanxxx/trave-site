@@ -232,9 +232,9 @@
       if (cap) cap.textContent = s.getAttribute('data-caption');
       if (tav && tavs[n]) tav.textContent = tavPrefix + tavs[n];
       if (cur) cur.textContent = pad(n + 1);
-      var on = bds[0].classList.contains('is-on') ? 0 : 1, off = 1 - on;
       var bd = s.getAttribute('data-bd');
       if (bd && bds.length === 2) {
+        var on = bds[0].classList.contains('is-on') ? 0 : 1, off = 1 - on;
         bds[off].style.setProperty('--bd', 'url(' + bd + ')');
         bds[off].style.setProperty('--veil', s.getAttribute('data-veil'));
         bds[off].classList.add('is-on'); bds[on].classList.remove('is-on');
@@ -285,6 +285,15 @@
       x0 = null;
     });
     d.addEventListener('visibilitychange', restart);
+  }
+
+  /* Booking bar docked at the bottom (full hero, desktop) */
+  var dock = $('.booking-dock');
+  if (dock) {
+    var heroEl = $('.hero-full');
+    var onDock = function () { dock.classList.toggle('is-docked', w.scrollY > (heroEl ? heroEl.offsetHeight * 0.55 : 400)); };
+    w.addEventListener('scroll', onDock, { passive: true });
+    onDock();
   }
 
   /* Sticky CTA ------------------------------------------------------------ */
