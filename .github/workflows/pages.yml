@@ -27,12 +27,13 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      # Anteprima: noindex su ogni pagina, contatti segnaposto e stagioni indicative visibili
+      # Anteprima per il cliente: solo la home (HOME_ONLY), noindex, contatti segnaposto
       - run: node scripts/build.mjs
         env:
           SITE_ENV: preview
           SHOW_PLACEHOLDERS: '1'
           BASE_PATH: /trave-site/
+          HOME_ONLY: '1'
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

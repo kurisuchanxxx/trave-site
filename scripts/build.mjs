@@ -27,6 +27,7 @@ const ENV = process.env.SITE_ENV === 'production' ? 'production' : 'preview';
 const PROD = ENV === 'production';
 const SHOW_PLACEHOLDERS = !PROD && process.env.SHOW_PLACEHOLDERS === '1';
 const BASE_PATH = process.env.BASE_PATH || '/';
+const HOME_ONLY = process.env.HOME_ONLY === '1'; // bozza da mostrare: pubblica solo la home, gli altri link mostrano un avviso
 const HERO = process.env.HERO === 'frame' ? 'frame' : 'full'; // full = hero a tutto schermo (default), frame = versione con cornice
 const { RATES } = await import(process.env.RATES_FILE ? pathToFileURL(resolve(process.env.RATES_FILE)).href : './data/rates.mjs');
 
@@ -1398,6 +1399,27 @@ const SITEMAP_IMAGES = {
   contatti: ['casa-esterno-cortile'],
 };
 
+// Modalità bozza "solo home": i link verso pagine non pubblicate diventano inattivi con un avviso.
+function homeOnly(html, slug) {
+  const allowed = new Set(['', 'en/']);
+  const base = 'https://x/' + slug;
+  const off = href => {
+    if (/^(https?:|mailto:|tel:|data:|#)/.test(href)) return false;
+    const path = new URL(href, base).pathname.replace(/^\//, '');
+    return !allowed.has(path);
+  };
+  html = html.replace(/<a\b([^>]*?)\shref="([^"]*)"/g, (m, pre, href) => (off(href) ? `<a${pre} href="#" data-draft-off` : m));
+  html = html.replace(/<form\b([^>]*?)\saction="([^"]*)"/g, (m, pre, act) => (off(act) ? `<form${pre} action="#" data-draft-off` : m));
+  const it = !slug.startsWith('en/');
+  const msg = it ? 'Anteprima: questa sezione è in lavorazione.' : 'Preview: this section is coming soon.';
+  const ui = `<div class="draft-toast" role="status" aria-live="polite" hidden>${msg}</div>
+<style>.draft-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:200;background:#1E2A23;color:#F2F1EC;padding:14px 20px;border-radius:2px;font:600 .8125rem/1.4 "Hanken Grotesk",Arial,sans-serif;letter-spacing:.06em;box-shadow:0 18px 40px -12px rgba(0,0,0,.4);max-width:calc(100% - 32px);text-align:center}</style>
+<script>(function(){var t=document.querySelector('.draft-toast'),h;function show(e){e.preventDefault();e.stopImmediatePropagation();t.hidden=false;clearTimeout(h);h=setTimeout(function(){t.hidden=true},2600)}
+document.addEventListener('click',function(e){var a=e.target.closest('a[data-draft-off]');if(a)show(e)},true);
+document.addEventListener('submit',function(e){if(e.target.matches('form[data-draft-off]'))show(e)},true);})();</script>`;
+  return html.replace('</body>', `${ui}\n</body>`);
+}
+
 function build() {
   validate();
   checkContrast();
@@ -1406,15 +1428,16 @@ function build() {
 
   const written = [];
   for (const key of Object.keys(PAGES)) {
+    if (HOME_ONLY && key !== 'home') continue;
     for (const lang of ['it', 'en']) {
       const file = join(OUT, PAGES[key][lang], 'index.html');
       mkdirSync(dirname(file), { recursive: true });
-      const html = layout(lang, key);
+      const html = HOME_ONLY ? homeOnly(layout(lang, key), PAGES[key][lang]) : layout(lang, key);
       writeFileSync(file, html);
       written.push([file, html]);
     }
   }
-  const nf = layout('it', 'notFound');
+  const nf = HOME_ONLY ? homeOnly(layout('it', 'notFound'), '') : layout('it', 'notFound');
   writeFileSync(join(OUT, '404.html'), nf);
   written.push([join(OUT, '404.html'), nf]);
 
@@ -1431,7 +1454,7 @@ function build() {
 
   // sitemap (senza privacy e 404)
   const lm = lastmod();
-  const sm = Object.keys(PAGES).filter(k => k !== 'privacy').flatMap(k => ['it', 'en'].map(lang => `  <url>
+  const sm = Object.keys(PAGES).filter(k => k !== 'privacy' && (!HOME_ONLY || k === 'home')).flatMap(k => ['it', 'en'].map(lang => `  <url>
     <loc>${abs(PAGES[k][lang])}</loc>
     <lastmod>${k === 'prezzi' && RATES.lastUpdated ? RATES.lastUpdated : lm}</lastmod>
     <xhtml:link rel="alternate" hreflang="it" href="${abs(PAGES[k].it)}"/>
